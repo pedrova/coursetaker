@@ -158,3 +158,27 @@ function isCourseMentor(handler){
 
 	});
 }
+
+//This method is used for opening up the QUIZ - window and the WORKING-window into two separate halves of the window
+var mainWindow, quizWindow;
+
+function openWin() {
+  mainWindow = window.open("/", "mainNavigationWindow", "width=250",
+    "height=250", "location=yes");
+  quizWindow = window.open("takecourse.html", "quizPanel", "width=250, height=250",
+    "location=yes");
+  if (!quizWindow || quizWindow.closed
+    || typeof quizWindow.closed == 'undefined') {
+    // First Checking Condition Works For IE & Firefox
+    // Second Checking Condition Works For Chrome
+    alert("Popup Blocker is enabled! Please add this site to your exception list.");
+  } else {
+    quizWindow.resizeTo(400, screen.height);
+    mainWindow.resizeTo(screen.width - 400, screen.height);
+    quizWindow.moveTo(screen.width - 400, 100);
+    mainWindow.moveTo(0, 100);
+    mainWindow.focus();
+    quizWindow.focus();
+  }
+
+}
