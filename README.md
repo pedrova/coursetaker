@@ -1,8 +1,1 @@
-INF5750 Group Assignment
-
-Members:
-
-- Joakim Kristiansen 
-- Vivek Kaul
-- Sigurhjörtur Snorrason
-- Farrukh Wahab Manzoor
+DHIS apps for e-learning. Based on INF5750 VJFS' group assignment.
