@@ -163,10 +163,8 @@ function isCourseMentor(handler){
 var mainWindow, quizWindow;
 
 function openWin() {
-  mainWindow = window.open("/", "mainNavigationWindow", "width=250",
-    "height=250", "location=yes");
-  quizWindow = window.open("takecourse.html", "quizPanel", "width=250, height=250",
-    "location=yes");
+  mainWindow = window.open("/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
+  quizWindow = window.open("takecourse.html", "quizPanel", "width=250, height=250, location=yes, scrollbars=yes");
   if (!quizWindow || quizWindow.closed
     || typeof quizWindow.closed == 'undefined') {
     // First Checking Condition Works For IE & Firefox
