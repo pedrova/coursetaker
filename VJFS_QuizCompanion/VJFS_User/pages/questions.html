@@ -65,8 +65,10 @@
 		main_layout += '<div id="question_list">';
 		main_layout += '</div>';
 
-		main_layout += '<button type="button" class="btn btn-success btn-block" onclick="sendToServer(); return false;">Send</a>';
-	
+    main_layout += '<button type="button" id="checkButton" class="btn btn-success btn-block" onclick="sendToServer(1); return false;">Check</button>';
+    main_layout += '<input type="hidden" id="checksLeft" value="3">';
+    main_layout += '<button type="button" class="btn btn-success btn-block" onclick="sendToServer(2); return false;">Submit</button>';
+
 		main_layout += '</div>';
 
 		$('#main_div').append(main_layout);

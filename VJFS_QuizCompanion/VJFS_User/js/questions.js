@@ -117,6 +117,7 @@ function getQuestions(handler) {
 		dataType: 'json'
 	}).success(function(questions) {
 		handler(questions);
+    $('#checkButton').html('Check');
 	}).error(function(error) {
 		handler(null);
 	});
@@ -148,7 +149,11 @@ function mobileCheck() {
 
 
 //Send hva brukeren har svart til server..
-function sendToServer() {
+function sendToServer(checkOrSubmit) {
+  // 1 is check, 2 is submit
+  if (checkOrSubmit == 1) {
+    $('#checkButton').html('Checking...');
+  }
 
 
 	var url = window.location;
@@ -180,9 +185,11 @@ function sendToServer() {
 
 						// Here we correct as a multiple choice quiz, ie answer will be provided right away.
 						if(how_to_correct) {
+              var checksLeft = $('#checksLeft').val();
 							for(key in quiz_questions) {
 
 								var question = quiz_questions[key];
+                // alternatives selected by user
 								var question_alternatives = [];
 
 								$('#' + question['questionID']).find('.alternative').each(function(index) {
@@ -195,13 +202,27 @@ function sendToServer() {
 								// Compare chosen alternatives with the right ones
 								for(var i = 0; i < question_alternatives.length; i++) {
 									if(question_alternatives[i]['alternativeChecked'] != question['questionAlternatives'][i]['alternativeChecked']) {
-										// Here we have different answers, let user know and store as failed
+                    // Here we have different answers, let user know and store as failed
 										$('#quizWrong').remove();
-										$('#quizContainer').append('<p id="quizWrong" style="color: red;">Not all answers where correct</p>')
+                    if (checkOrSubmit == 1) {
+                      checksLeft = handleChecks(checksLeft);
+                      $('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect. You have ' + checksLeft + ' check(s) left.</p>');
+                    } else if (checkOrSubmit == 2) {
+                      $('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect.</p>');
+                    }
+                    $('#quizWrong').focus();
 										return false;
 									}
 								}
 							}
+
+              if (checkOrSubmit == 1) {
+                $('#quizWrong').remove();
+                handleChecks(0);
+                $('#quizContainer').append('<p id="quizWrong" style="color: green;">All answers are correct. Feel free to submit!</p>');
+                $('#quizWrong').focus();
+                return false;
+              }
 
 							// Here ALL questions where correct
 							$('#quizWrong').remove();
@@ -311,4 +332,16 @@ function sendToServer() {
 
 	});
 
+}
+
+function handleChecks(checksLeft) {
+  var checksLeft = checksLeft - 1;
+  if (checksLeft < 0) {
+    checksLeft = 0;
+  }
+  $('#checksLeft').val(checksLeft);
+  if (checksLeft == 0) {
+    $('#checkButton').prop('disabled', true);
+  }
+  return checksLeft;
 }
