@@ -39,7 +39,10 @@ function displayQuestions(quiz){
 
 				var tmp = '<div class="panel panel-default" id='+quiz_questions[key].questionID+'>';
 				tmp += '<div class="panel-heading">';
-				tmp += '<h3 class="panel-title">'+ quiz_questions[key].questionTitle+'</h3>';
+				tmp += '<h3 class="panel-title">'+ quiz_questions[key].questionTitle;
+        tmp += '<div id="incorrect" class="label label-danger hide">Incorrect</div>';
+        tmp += '<div id="correct" class="label label-success hide">Correct</div>';
+        tmp += '</h3>';
 				tmp += '<h3 class="panel-title">'+ quiz_questions[key].questionQuestion+'</h3>';
 				tmp += '</div>';
 				tmp += '<div class="panel-body">';
@@ -186,6 +189,7 @@ function sendToServer(checkOrSubmit) {
 						// Here we correct as a multiple choice quiz, ie answer will be provided right away.
 						if(how_to_correct) {
               var checksLeft = $('#checksLeft').val();
+              var questionIds = [];
 							for(key in quiz_questions) {
 
 								var question = quiz_questions[key];
@@ -207,11 +211,14 @@ function sendToServer(checkOrSubmit) {
                     if (checkOrSubmit == 1) {
                       checksLeft = handleChecks(checksLeft);
                       $('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect. You have ' + checksLeft + ' check(s) left.</p>');
+                      $('#quizWrong').focus();
+                      return false;
                     } else if (checkOrSubmit == 2) {
-                      $('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect.</p>');
+                      //$('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect.</p>');
+                      if (questionIds.indexOf(question['questionID']) == -1) {
+                        questionIds.push(question['questionID']);
+                      }
                     }
-                    $('#quizWrong').focus();
-										return false;
 									}
 								}
 							}
@@ -221,6 +228,12 @@ function sendToServer(checkOrSubmit) {
                 handleChecks(0);
                 $('#quizContainer').append('<p id="quizWrong" style="color: green;">All answers are correct. Feel free to submit!</p>');
                 $('#quizWrong').focus();
+                return false;
+              }
+
+              // if there are wrong answers, show feedback and do not save
+              if (questionIds.length > 0) {
+                showFeedback(questionIds);
                 return false;
               }
 
@@ -250,7 +263,8 @@ function sendToServer(checkOrSubmit) {
 								else{
 									var r = window.confirm("Quiz already approved, did not send to mentor for correction!:!")
 									if (r == true) {
-										window.location.href = getAppRoot();
+                    showFeedback([]);
+										//window.location.href = getAppRoot();
 									} else {
 
 									}
@@ -344,4 +358,19 @@ function handleChecks(checksLeft) {
     $('#checkButton').prop('disabled', true);
   }
   return checksLeft;
+}
+
+function backToMainPage() {
+  window.location.href = getHostRoot() + '/apps/coursetaker/takecourse.html';
+}
+
+function showFeedback(questionIds) {
+  console.log(questionIds);
+  console.log(questionIds.length);
+  $.each(questionIds, function(index, value) {
+    console.log(value);
+    $('#' + value).find('div#incorrect').removeClass('hide');
+  });
+  $('#submitButton, #checkButton').addClass('hide');
+  $('#backButton').removeClass('hide');
 }

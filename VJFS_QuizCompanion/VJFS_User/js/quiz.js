@@ -84,7 +84,8 @@ function saveUserQuiz(quiz_id) {
 
         // Update quizes on server and go to menu over quizes
         setUserQuizes(JSON.stringify(quizes), function() {
-            window.location.href = getAppRoot();
+          showFeedback([]);
+            //window.location.href = getAppRoot();
         });
      });
 
