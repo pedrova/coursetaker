@@ -180,3 +180,21 @@ function openWin() {
   }
 
 }
+
+// temp function (will eventually be removed) in case we need to reset user1's quiz data
+function resetData() {
+  var username = 'user1';
+  var url = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_quizes';
+  var data = JSON.stringify({"quizes": []});
+
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: data,
+    contentType: 'text/plain'
+  }).success(function(data) {
+    console.log("data reset");
+  }).error(function() {
+    console.log("error resetting data");
+  });
+}
