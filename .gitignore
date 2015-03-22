@@ -43,3 +43,6 @@ local.properties
 # TeXlipse plugin
 
 .texlipse
+
+*.zip
+*.txt
