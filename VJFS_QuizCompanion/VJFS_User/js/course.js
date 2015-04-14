@@ -377,6 +377,47 @@ function getQuiz(quiz_id, handler) {
 	
 	getQuizes(function(quizes) {
 
+    // get quizes in this particular course
+    var url = window.location;
+    var courseId = getURLParameter(url, 'course_id');
+    var quizId = getURLParameter(url, 'quiz_id');
+    if (courseId > 0 && quizId > 0) {
+      console.log("yep");
+      var course_quizes = $.grep(quizes['quizes'], function (e) {
+        return e.courseID == courseId;
+      });
+
+      course_quizes.sort(function (a, b) {
+        if (a.quizLevel < b.quizLevel) return -1;
+        if (a.quizLevel > b.quizLevel) return 1;
+        return 0;
+      });
+
+      var quizesInCourse = [];
+
+      for(quiz_key in course_quizes) {
+        // gather quiz ids for this particular course
+        quizesInCourse.push(course_quizes[quiz_key].quizID);
+      }
+      console.log(quizesInCourse);
+
+      $.each(quizesInCourse, function (index, value) {
+        if (value == quizId) {
+          index = index + 1;
+          if (index < quizesInCourse.length) {
+            // if it's not the last element, get next element (next quiz id)
+            var nextQuizId = quizesInCourse[index];
+            // and update hidden element
+            $('#nextQuizId').val(nextQuizId);
+            return false;
+          } else {
+            // last element, no more quizes in this course
+            $('#nextQuizId').val(0);
+          }
+        }
+      });
+    }
+
 		// Retrieve quiz based on quiz_id
 		var quiz = $.grep(quizes['quizes'], function(e){ return e.quizID == quiz_id; });
 		

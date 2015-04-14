@@ -156,6 +156,8 @@ function sendToServer(checkOrSubmit) {
   // 1 is check, 2 is submit
   if (checkOrSubmit == 1) {
     $('#checkButton').html('Checking...');
+  } else if (checkOrSubmit == 2) {
+    $('#submitButton').html('Submitting...');
   }
 
 
@@ -210,7 +212,7 @@ function sendToServer(checkOrSubmit) {
 										$('#quizWrong').remove();
                     if (checkOrSubmit == 1) {
                       checksLeft = handleChecks(checksLeft);
-                      $('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect. You have ' + checksLeft + ' check(s) left.</p>');
+                      $('#question_list').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect. You have ' + checksLeft + ' check(s) left.</p>');
                       $('#quizWrong').focus();
                       return false;
                     } else if (checkOrSubmit == 2) {
@@ -226,7 +228,7 @@ function sendToServer(checkOrSubmit) {
               if (checkOrSubmit == 1) {
                 $('#quizWrong').remove();
                 handleChecks(0);
-                $('#quizContainer').append('<p id="quizWrong" style="color: green;">All answers are correct. Feel free to submit!</p>');
+                $('#question_list').append('<p id="quizWrong" style="color: green;">All answers are correct. Feel free to submit!</p>');
                 $('#quizWrong').focus();
                 return false;
               }
@@ -373,4 +375,18 @@ function showFeedback(questionIds) {
   });
   $('#submitButton, #checkButton').addClass('hide');
   $('#backButton').removeClass('hide');
+  $('#submitButton').html('Submit');
+
+  if (questionIds.length == 0 && $('#nextQuizId').val() != 0) {
+    // no wrong answers and no more quizes available, show Next button
+    $('#nextButton').removeClass('hide');
+  }
+}
+
+function nextModule() {
+  var url = window.location;
+  var courseId = getURLParameter(url, 'course_id');
+  var nextQuizId = $('#nextQuizId').val();
+
+  window.location.href = 'questions.html?quiz_id=' + nextQuizId + '&course_id=' + courseId;
 }
