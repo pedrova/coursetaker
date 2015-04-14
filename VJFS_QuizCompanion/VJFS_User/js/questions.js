@@ -378,7 +378,7 @@ function showFeedback(questionIds) {
   $('#submitButton').html('Submit');
 
   if (questionIds.length == 0 && $('#nextQuizId').val() != 0) {
-    // no wrong answers and no more quizes available, show Next button
+    // no wrong answers and more quizes available, show Next button
     $('#nextButton').removeClass('hide');
   }
 }
