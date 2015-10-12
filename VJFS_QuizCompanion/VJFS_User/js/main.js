@@ -183,18 +183,150 @@ function openWin() {
 
 // temp function (will eventually be removed) in case we need to reset user1's quiz data
 function resetData() {
-  var username = 'user1';
-  var url = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_quizes';
-  var data = JSON.stringify({"quizes": []});
+  getMyUserName(function(user){
+    var username = user.userCredentials.code;
+    var url = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_quizes';
+    var data = JSON.stringify({"quizes": []});
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: data,
+      contentType: 'text/plain'
+    }).success(function(data) {
+      console.log("data reset");
+    }).error(function() {
+      console.log("error resetting data");
+    });
+
+    var levelUrl = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_level';
+    var levelData = JSON.stringify({"level": 1});
+
+    // Update level on server
+    $.ajax({
+      type: 'POST',
+      url: levelUrl,
+      data: levelData,
+      contentType: 'text/plain'
+    }).success(function(data) {
+      console.log('user level reset');
+    }).error(function() {
+      console.log('error resetting user level');
+    });
+  });
+}
+
+function setInitialData() {
+  var urlCourses = getHostRoot() + '/api/apps/coursetaker/courses.txt';
+  var urlQuizes = getHostRoot() + '/api/apps/coursetaker/quizes.txt';
+  var urlQuestions = getHostRoot() + '/api/apps/coursetaker/questions.txt';
+
+  var urlPostCourses = getHostRoot() + '/api/systemSettings/VJFS_courses';
+  var urlPostQuizes = getHostRoot() + '/api/systemSettings/VJFS_quizes';
+  var urlPostQuestions = getHostRoot() + '/api/systemSettings/VJFS_questions';
 
   $.ajax({
-    type: "POST",
-    url: url,
-    data: data,
-    contentType: 'text/plain'
-  }).success(function(data) {
-    console.log("data reset");
-  }).error(function() {
-    console.log("error resetting data");
+    url: urlCourses,
+    dataType: 'json'
+  }).success(function(courses) {
+    var courses = JSON.stringify(courses);
+    $.ajax({
+      type: "POST",
+      url: urlPostCourses,
+      data: courses,
+      contentType: 'text/plain'
+    }).success(function(data) {
+      console.log("courses posted!");
+    }).error(function() {
+      console.log("error posting courses");
+    });
+  }).error(function(error) {
+    console.log("error getting courses");
+  });
+
+  $.ajax({
+    url: urlQuizes,
+    dataType: 'json'
+  }).success(function(quizes) {
+    var quizes = JSON.stringify(quizes);
+    $.ajax({
+      type: "POST",
+      url: urlPostQuizes,
+      data: quizes,
+      contentType: 'text/plain'
+    }).success(function(data) {
+      console.log("quizes posted!");
+    }).error(function() {
+      console.log("error posting quizes");
+    });
+  }).error(function(error) {
+    console.log("error getting quizes");
+  });
+
+  $.ajax({
+    url: urlQuestions,
+    dataType: 'json'
+  }).success(function(questions) {
+    var questions = JSON.stringify(questions);
+    $.ajax({
+      type: "POST",
+      url: urlPostQuestions,
+      data: questions,
+      contentType: 'text/plain'
+    }).success(function(data) {
+      console.log("questions posted!");
+    }).error(function() {
+      console.log("error posting questions");
+    });
+  }).error(function(error) {
+    console.log("error getting questions");
+  });
+}
+
+function getUserLevel(handler) {
+  getMyUserName(function(user){
+
+    var username = user.userCredentials.code;
+    // Get URL from where to fetch quiz's json
+    var url = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_level';
+
+    // Get quiz's as json object and on success use handler function
+    $.ajax({
+      url: url,
+      dataType: 'json'
+    }).success(function(level) {
+      handler(level.level);
+    }).error(function(level) {
+      handler(1);
+    });
+
+  });
+}
+
+function setUserLevel() {
+  getUserLevel(function(level){
+
+    getMyUserName(function(user){
+
+      var username = user.userCredentials.code;
+
+      var url = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_level';
+
+      var data = JSON.stringify({"level": level+1});
+
+      // Update level on server
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        contentType: 'text/plain'
+      }).success(function(data) {
+        console.log('User level set!');
+      }).error(function() {
+        console.log('Error setting user level');
+      });
+
+    });
+
   });
 }

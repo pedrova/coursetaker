@@ -70,6 +70,11 @@
 								   id="courseTitle" name="courseTitle" placeholder="What is the title for the course?">
 						</div>
 
+            <div class="form-group">
+              <label for="courseLevel">Level</label>
+              <select class="selectpicker form-control" id="courseLevel"></select>
+            </div>
+
 						<button type="button" class="btn btn-success btn-block" id="courseSave" onclick="saveCourse(course_id);"></button>
 					</form>
 				</div>
@@ -117,6 +122,20 @@
 			// Ready whenever you are - document!
 			$(document).ready(function(){
 
+        getCourses(function(courses){
+          var numCourses = 0;
+          // Fetch number of courses
+          if(courses != null) {
+            numCourses = courses.courses.length;
+          } else {
+            numCourses++;
+          }
+          // Display level options
+          for(var i = 0; i < numCourses; i++) {
+            $('#courseLevel').append('<option value="' + (i+1) + '">' + (i + 1) + '</option>');
+          }
+        });
+
 				if(course_id != null) {
 
 					// Retrieve course
@@ -127,6 +146,7 @@
 							// Remember that courseDescription is a textarea, so must un escape \n before displaying content
 							$('#courseHeader').html(course['courseTitle']);
 							$('#courseTitle').val(course['courseTitle']);
+              $('#courseLevel').val(course['courseLevel']);
 							//$('#courseDescription').val(course['courseDescription'].replace(/\\\\n/g, '\n'));
 							//$('#courseDescription').code(JSON.parse(course['courseDescription']));
 							$('#courseSave').html('Save Course');
