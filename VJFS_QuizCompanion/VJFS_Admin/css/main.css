@@ -13,3 +13,18 @@
     /* IE 10+ */
     color: red;
 }
+
+.headcol {
+  position: absolute;
+  width: 281px;
+  left: 55px;
+  top: auto;
+}
+
+.headcol.noborder {
+  border: none;
+}
+
+.headcol.course {
+  background-color: #E9E9E9;
+}
