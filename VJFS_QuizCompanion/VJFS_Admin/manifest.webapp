@@ -1,7 +1,7 @@
 {
 	"version" : "1.0",
-	"name" : "VJFS Admin",
-	"description" : "Make Quiz here.",
+	"name" : "Course Writer",
+	"description" : "Create a DHIS2 user course.",
 	"launch_path" : "index.html",
 
 	"icons": {
@@ -11,7 +11,7 @@
 	},
 
 	"developer" : {
-		"name" : "VJFS"
+		"name" : "Farrukh & Pedro"
 	},
 
 	"default_locale" : "en",
