@@ -16,7 +16,7 @@ function displayQuestions(quiz) {
     $('#quiz').append(' <label class="list-group-item active">Question</label>');
     $('#quiz').append('<ul class="list-group-item list-group" id="quizQuestion"></ul>');
     $('#quiz').append('<a href="question_text.html?quiz_id=' + quiz.quizID + '&course_id=' + quiz.courseID + '" class="btn-block btn btn-info">New Text Question</a>');
-    $('#quiz').append('<a href="question_multiplechoice.html?quiz_id=' + quiz.quizID + '&course_id=' + quiz.courseID + '" class="btn-block btn btn-info">New Mulitple Choice Question</a>');
+    $('#quiz').append('<a href="question_multiplechoice.html?quiz_id=' + quiz.quizID + '&course_id=' + quiz.courseID + '" class="btn-block btn btn-info">New Multiple Choice Question</a>');
 
     getQuestions(function(questions) {
         if(questions != null) {
