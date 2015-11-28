@@ -27,63 +27,63 @@ function displayCourses() {
 
 function displayCoursesTaken() {
   getUsers(function(users) {
-    if (users!=null) {
-      var name = '';
-      var numUsers = 0;
-      var userArray = [];
-      for(key in users['users']) {
-        userArray.push(users['users'][key].userCredentials.code);
-        numUsers++;
-        name += '<td>'+users['users'][key].name+'</td>';
-      }
-      $('#userRow').append(name);
-    }
+    getCourses(function(courses) {
+      if (courses!=null) {
+        var numCoursesQuizes = 0;
+        var courseAndQuizIds = [];
+        getQuizes(function(quizes) {
+          var course = '';
+          for (key2 in courses['courses']) {
+            numCoursesQuizes++;
+            var courseId = courses['courses'][key2].courseID;
+            courseAndQuizIds.push(courseId);
+            var courseTitle = courses['courses'][key2].courseTitle;
+            if (courseTitle.length > 30) {
+              courseTitle = courseTitle.substr(0, 30) + '...';
+            }
+            course += '<td id="'+courseId+'" class="course"><strong>'+courseTitle+'</strong></td>';
 
+            if(quizes != null) {
+              var course_quizes = $.grep(quizes['quizes'], function(e){ return e.courseID == courseId; });
 
-  getCourses(function(courses) {
-    if (courses!=null) {
-      getQuizes(function(quizes) {
-      var course = '';
-      for (key2 in courses['courses']) {
-        course += '<tr>';
-        var courseTitle = courses['courses'][key2].courseTitle;
-        if (courseTitle.length > 30) {
-          courseTitle = courseTitle.substr(0, 30) + '...';
-        }
-        course += '<td id="'+courses['courses'][key2].courseID+'" class="headcol course"><strong>'+courseTitle+'</strong></td>';
-        for (var i=0; i<numUsers; i++) {
-          course += '<td><div class="label label-info">NC</div></td>';
-        }
-        course += '</tr>';
-
-
-
-          if(quizes != null) {
-            var course_quizes = $.grep(quizes['quizes'], function(e){ return e.courseID == courses['courses'][key2].courseID; });
-
-            for(key3 in course_quizes) {
-              course += '<tr>';
-              var quizTitle = course_quizes[key3].quizTitle;
-              if (quizTitle.length > 40) {
-                quizTitle = quizTitle.substr(0, 40) + '...';
+              for(key3 in course_quizes) {
+                numCoursesQuizes++;
+                var quizId = course_quizes[key3].quizID;
+                courseAndQuizIds.push(quizId);
+                var quizTitle = course_quizes[key3].quizTitle;
+                if (quizTitle.length > 40) {
+                  quizTitle = quizTitle.substr(0, 40) + '...';
+                }
+                course += '<td>'+quizTitle+'</td>';
               }
-              course += '<td class="headcol">'+quizTitle+'</td>';
-              for (var i=0; i<numUsers; i++) {
-                course += '<td id="'+userArray[i]+courses['courses'][key2].courseID+course_quizes[key3].quizID+'">&nbsp;</td>';
-              }
-              course += '</tr>';
             }
           }
 
+          $('#coursesRow').append(course);
 
+          if (users!=null) {
+              var userRow = '';
+              var userArray = [];
+              var username = '';
+              for(key in users['users']) {
+                userRow += '<tr>';
+                username = users['users'][key].userCredentials.code;
+                userArray.push(username);
+                userRow += '<td>'+users['users'][key].name+'</td>';
+                for (var i=0; i<numCoursesQuizes; i++) {
+                  userRow += '<td id="'+username+courseAndQuizIds[i]+'">&nbsp;</td>'
+                }
+                userRow += '</tr>';
+              }
+              $('#coursesTaken').append(userRow);
+          }
+
+          for (var n=0; n<userArray.length; n++) {
+            doLabels(userArray[n]);
+          }
+        });
       }
-      $('#coursesTaken').append(course);
-      for (var n=0; n<userArray.length; n++) {
-        doLabels(userArray[n]);
-      }
-      });
-    }
-  });
+    });
   });
 }
 
@@ -96,12 +96,11 @@ function doLabels(username) {
       dataType: 'json'
     }).success(function(quizes) {
       $.each(quizes.quizes, function(index, value) {
-        $('#'+username+value.courseID+value.quizID).append('<div class="label label-success">OK</div>');
+        $('#'+username+value.quizID).append('<div class="label label-success">OK</div>');
       });
     }).error(function() {
       console.log('no user quizes for '+username);
     });
-
 }
 
 /**
