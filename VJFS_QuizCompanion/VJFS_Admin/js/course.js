@@ -66,14 +66,16 @@ function displayCoursesTaken() {
               var userArray = [];
               var username = '';
               for(key in users['users']) {
-                userRow += '<tr>';
-                username = users['users'][key].userCredentials.code;
-                userArray.push(username);
-                userRow += '<td>'+users['users'][key].name+'</td>';
-                for (var i=0; i<numCoursesQuizes; i++) {
-                  userRow += '<td id="'+username+courseAndQuizIds[i]+'">&nbsp;</td>'
+                if (users['users'][key].hasOwnProperty('userCredentials')) {
+                  userRow += '<tr>';
+                  username = users['users'][key].userCredentials.code;
+                  userArray.push(username);
+                  userRow += '<td>'+users['users'][key].name+'</td>';
+                  for (var i=0; i<numCoursesQuizes; i++) {
+                    userRow += '<td id="'+username+courseAndQuizIds[i]+'">&nbsp;</td>'
+                  }
+                  userRow += '</tr>';
                 }
-                userRow += '</tr>';
               }
               $('#coursesTaken').append(userRow);
           }

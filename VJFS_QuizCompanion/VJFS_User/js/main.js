@@ -33,7 +33,7 @@ function getURLParameter(url, parameter_key)
 * @returns {string} : the currently root url for the app
 */
 function getAppRoot() {
-	return getHostRoot() + '/apps/VJFS_QuizCompanion/VJFS_User';
+	return getHostRoot() + '/apps/coursetaker';
 }
 
 /**
