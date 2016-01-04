@@ -44,7 +44,26 @@ function setUserQuizes(quizes, handler) {
 
     });
 }
+function getImages(handler) {
+    // Get URL from where to fetch quiz's json
+    var url = getImageResourceURL();
 
+    // Get quiz's as json object and on success use handler function
+    $.ajax({
+        url: url,
+        dataType: 'json'
+    }).success(function(images) {
+        handler(images);
+    }).error(function(error) {
+        handler(null);
+    });
+}
+function getImageResourceURL(){
+    var quiz_id = getURLParameter(window.location, 'quiz_id');
+    var url = getHostRoot() + '/api/systemSettings/VJFS_Images_' + quiz_id;
+    //console.log(url);
+    return url;
+}
 
 function saveUserQuiz(quiz_id) {
     // Create URL to POST new quiz to

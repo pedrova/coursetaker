@@ -6,24 +6,77 @@ function displayQuizInformation(){
 	var quiz_id = getURLParameter(url, 'quiz_id');
 
 	getQuiz(quiz_id, function(quiz) {
+		getImages(function(images){
+			
+			if(quiz != null) {
+				var l = '<h2>'+ quiz['quizTitle'] +'</h2>'
+				$('#quiz_info').append(l);
 
-		if(quiz != null) {
+				if(quiz['quizDescription']){
 
-			var l = '<h2>'+ quiz['quizTitle'] +'</h2>'
-			$('#quiz_info').append(l);
+					if(images != null){
+						//console.log("images: " + images);
+						var ape = JSON.parse(quiz['quizDescription']);
+						var counter = 0;
+						if(images["images"].length > 0){
+							var tempDesc = ape;
+							var counter  = 0;
+							for(var j = 0; j < images["images"].length; j++){
+								tempDesc = tempDesc.replace('imageplaceholder', images["images"][j].imageContent); 
+							}
+							$('#quiz_description').append(tempDesc);
+							
+							var description = document.getElementById("quiz_description");
+						    var images = description.getElementsByTagName("img");
+						    for (var i=0; i < images.length; i++) {
+						        //$('#summernoteContent').append('<br>' + imagesFound[i] + '</br>'+ '<p>Click on image to enlarge</p>');
+						        if(images[i].width > window.innerWidth){
+						            images[i].style["width"] = window.innerWidth*0.95 + 'px';
+						            images[i].setAttribute("resized", true);
+						        }
+						        images[i].setAttribute("clicked", true);
+						      
+						        (function() {
+						            "use strict";
+						            images[i].addEventListener("click", function () {
+						               if(this.resized = 'true'){
+						                    var newImage = this.cloneNode(true);
+						                    newImage.style.width = newImage.width + 'px';
+						                    var windowWidth = newImage.width + 10;
+						                    var windowHeight = newImage.height + 10;
+						                    //var newWin = open('url','windowName', 'width=' + windowWidth + ', height=' + windowHeight);
+						                    //newWin.document.write(newImage.outerHTML);
+						                    showFullImage(this);
+						               }
+						            });
+						        }(i));
+						    }
+							
+						} else {
+							var desc = JSON.parse(quiz['quizDescription']);
+							var test =  '<div class="panel-body" >'+desc+'</div>'
+							$('#quiz_description').append(test);
+						}
+					} else {
+						
+					}
+					
+				}
+				displayQuestions(quiz);
 
-			if(quiz['quizDescription']){
-				var desc = JSON.parse(quiz['quizDescription']);
-				var test =  '<div class="panel-body" >'+desc+'</div>'
-				$('#quiz_description').append(test);
 			}
-
-			displayQuestions(quiz);
-
-		}
+		});
+		
 	});
 }
 
+function showFullImage(Image){
+    sUrl = decodeURIComponent(Image.src);
+   var newWindow = window.open(sUrl, '_blank', 'width=' + screen.width + ', height=' + screen.height);
+    if (window.focus) {
+        newWindow.focus();
+    }
+}
 
 function displayQuestions(quiz){
 
