@@ -147,20 +147,46 @@
 										['misc', ['fullscreen', 'undo', 'redo', 'help']]
 									]
 								});
-
+								
 								// Fetch quiz if quiz_id is provided
 								if(quiz_id != null) {
 									getQuiz(quiz_id, function(quiz) {
-
-										// Display quiz and a save button
-										$('#quizHeader').html(quiz['quizTitle']);
-										$('#quizTitle').val(quiz['quizTitle']);
-										if(quiz['quizDescription']) $('#quizDescription').code(JSON.parse(quiz['quizDescription']));
-										$('#quizLevel').val(quiz['quizLevel']);
-										$('#quizSave').html('Save Quiz');
-
-										// Display question's for quiz
-										displayQuestions(quiz);
+										getImages(function(images){
+											// Display quiz and a save button
+											$('#quizHeader').html(quiz['quizTitle']);
+											$('#quizTitle').val(quiz['quizTitle']);
+											if(quiz['quizDescription']){
+												if(images != null){
+													//should check if images is not equal to zero 
+													var images2 = JSON.stringify(images);
+													//console.log("images2: " + images2);
+													//console.log("images: " +images)
+													var ape = JSON.parse(quiz['quizDescription']);
+													var counter = 0;
+													if(images["images"].length > 0){
+														//console.log(images["images"].length);
+														var tempDesc = ape;
+														var counter  = 0;
+														for(var j = 0; j < images["images"].length; j++){
+															console.log("images counter " + counter++)
+															tempDesc = tempDesc.replace('<p>Click on image to enlarge</p>', ''); 
+															tempDesc = tempDesc.replace('imageplaceholder', images["images"][j].imageContent); 
+														}
+														$('#quizDescription').summernote('code', tempDesc);
+													} else {
+														//console.log("ended up inside imageslength not larger than 0")
+														$('#quizDescription').summernote('code', JSON.parse(quiz['quizDescription']));
+													}
+												}else{
+													//console.log("ended up inside images not equal 0")
+													$('#quizDescription').summernote('code', JSON.parse(quiz['quizDescription']));
+												}
+											} 
+											$('#quizLevel').val(quiz['quizLevel']);
+											$('#quizSave').html('Save Quiz');
+											// Display question's for quiz
+											displayQuestions(quiz);
+										});
 									});
 								}  else {
 									// Display a new course label and an add course button

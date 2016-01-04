@@ -50,6 +50,26 @@ function getQuizes(handler) {
         handler(null);
     });
 }
+function getImages(handler) {
+    // Get URL from where to fetch quiz's json
+    var url = getImageResourceURL();
+
+    // Get quiz's as json object and on success use handler function
+    $.ajax({
+        url: url,
+        dataType: 'json'
+    }).success(function(images) {
+        handler(images);
+    }).error(function(error) {
+        handler(null);
+    });
+}
+function getImageResourceURL(){
+    var quiz_id = getURLParameter(window.location, 'quiz_id');
+    var url = getHostRoot() + '/api/systemSettings/VJFS_Images_' + quiz_id;
+    console.log(url);
+    return url;
+}
 
 function setQuizes(quizes, handler) {
     // Get URL from where to fetch courses json
@@ -91,8 +111,31 @@ function saveQuiz(course_id, quiz_id) {
     // Retrieve quiz title and quiz level from form
     var quizTitle =  $('#quizTitle').val();
     var quizLevel = $('#quizLevel').val();
-    var quizDescription = JSON.stringify($('#quizDescription').code());
+    var quizDescription = JSON.stringify($('#quizDescription').summernote('code'));
 
+    //console.log("quiz descrption stringified: "+ JSON.stringify($('#quizDescription').summernote('code')));
+    //console.log("quiz descrption parsed: "+ JSON.parse($('#quizDescription').summernote('code')));
+    var images = {
+        "images": []
+    };
+    var imagesReplaced = false;
+    var description2 = $('#quizDescription').summernote('code');
+    //console.log(description2);
+    var re = /<img.+?px;">/g;
+    var imagesFound = description2.match(re);
+   
+    if(imagesFound != null){
+        imagesReplaced = true;
+         //console.log(imagesFound.length);
+         for (i = 0; i < imagesFound.length; i++) {
+            images['images'].push( {"imageContent" : imagesFound[i]} );
+            //console.log()
+        }
+    }
+
+    var quizReplaceImages = description2.replace(re, ' imageplaceholder <p>Click on image to enlarge</p>');
+    //console.log(quizReplaceImages);
+    //console.log(quizReplaceImages);
 
     // Quiz title cannot be empty: tell user and return
     if(quizTitle.isEmpty()) {
@@ -114,16 +157,32 @@ function saveQuiz(course_id, quiz_id) {
             var quiz = $.grep(quizes['quizes'], function(e){ return e.quizID == quiz_id; });
             quiz[0].quizTitle = quizTitle;
             quiz[0].quizLevel = quizLevel;
-            quiz[0].quizDescription = quizDescription;
+            if(imagesReplaced == true){
+                quiz[0].quizDescription = JSON.stringify(quizReplaceImages);
+
+            } else {
+                 quiz[0].quizDescription = quizDescription;
+            }
         } else {
             // Here we have a new quiz
-            quizes['quizes'].push( {"quizID" : getUniqueID(), "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : quizDescription, "quizLevel" : quizLevel } );
+            if(imagesReplaced == true){
+                quizes['quizes'].push( {"quizID" : getUniqueID(), "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : JSON.stringify(quizReplaceImages), "quizLevel" : quizLevel } );
+
+            } else {
+                quizes['quizes'].push( {"quizID" : getUniqueID(), "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : quizDescription, "quizLevel" : quizLevel } );
+
+            }
         }
 
         // Update quizes on server and go to menu over quizes
+        
         setQuizes(JSON.stringify(quizes), function() {
-            window.location.href = getAppRoot() + '/content/course.html?course_id=' + course_id;
+            setImages(JSON.stringify(images), function() {
+                //window.location.href = getAppRoot() + '/content/course.html?course_id=' + course_id;
+            });
         });
+        
+        console.log("description2 : " + description2);
     });
 }
 
