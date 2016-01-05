@@ -162,23 +162,7 @@ function mobileCheck() {
 }
 
 function navBarElements(){
-	isCourseAttendant(function(isCourseAttendant) {
-		if(!isCourseAttendant){
-			document.getElementById("showcourse").style.display = "none";
-			console.log();
-		}
-	});
-	isCourseMentor(function(isCourseMentor) {
-		if(!isCourseMentor){
-			document.getElementById("showmentor").style.display = "none";
-		}
-	});
-	isCustomizer(function(isCustomizer) {
-		if(!isCustomizer) {
-			document.getElementById("showadmin").style.display = "none";
-			document.getElementById("showstat").style.display = "none";
-		}
-	});
+
 }
 
 function isCourseAttendant(handler){
