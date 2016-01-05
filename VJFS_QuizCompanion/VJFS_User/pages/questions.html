@@ -28,7 +28,7 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script
-		src="..js/jquery.min.js"></script>
+		src="../js/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="../js/bootstrap.min.js"></script>
 
@@ -42,15 +42,7 @@
 			$('#navbar').collapse("hide");
 		}
 		navBarElements();
-		// Need to check if admin is logged in
-		isCourseAttendant(function(isCourseAttendant) {
-
-			if (!isCourseAttendant) {
-				$('#main_div').empty();
-				$('#main_div').html('<br><div class="col-xs-3"></div><div class="container col-xs-6 list-group"><label class="active list-group-item text-center">Must be enrolled in course to use this App</label></div>');
-				return;
-			}
-		});
+		
 		var main_layout = '<div class="row">';
 
 

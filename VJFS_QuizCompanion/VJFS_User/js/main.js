@@ -44,7 +44,7 @@ function getAppRoot() {
  */
 
 function navBarElements(){
-	document.getElementById("showcourse").style.display = "none";
+	//document.getElementById("showcourse").style.display = "none";
 }
 
 
