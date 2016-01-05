@@ -77,7 +77,6 @@ function showFullImage(Image){
         newWindow.focus();
     }
 }
-
 function displayQuestions(quiz){
 
 
@@ -92,10 +91,7 @@ function displayQuestions(quiz){
 
 				var tmp = '<div class="panel panel-default" id='+quiz_questions[key].questionID+'>';
 				tmp += '<div class="panel-heading">';
-				tmp += '<h3 class="panel-title">'+ quiz_questions[key].questionTitle;
-        tmp += '<div id="incorrect" class="label label-danger hide">Incorrect</div>';
-        tmp += '<div id="correct" class="label label-success hide">Correct</div>';
-        tmp += '</h3>';
+				tmp += '<h3 class="panel-title">'+ quiz_questions[key].questionTitle+'</h3>';
 				tmp += '<h3 class="panel-title">'+ quiz_questions[key].questionQuestion+'</h3>';
 				tmp += '</div>';
 				tmp += '<div class="panel-body">';
@@ -173,7 +169,6 @@ function getQuestions(handler) {
 		dataType: 'json'
 	}).success(function(questions) {
 		handler(questions);
-    $('#checkButton').html('Check');
 	}).error(function(error) {
 		handler(null);
 	});
@@ -205,13 +200,7 @@ function mobileCheck() {
 
 
 //Send hva brukeren har svart til server..
-function sendToServer(checkOrSubmit) {
-  // 1 is check, 2 is submit
-  if (checkOrSubmit == 1) {
-    $('#checkButton').html('Checking...');
-  } else if (checkOrSubmit == 2) {
-    $('#submitButton').html('Submitting...');
-  }
+function sendToServer() {
 
 
 	var url = window.location;
@@ -243,12 +232,9 @@ function sendToServer(checkOrSubmit) {
 
 						// Here we correct as a multiple choice quiz, ie answer will be provided right away.
 						if(how_to_correct) {
-              var checksLeft = $('#checksLeft').val();
-              var questionIds = [];
 							for(key in quiz_questions) {
 
 								var question = quiz_questions[key];
-                // alternatives selected by user
 								var question_alternatives = [];
 
 								$('#' + question['questionID']).find('.alternative').each(function(index) {
@@ -261,36 +247,13 @@ function sendToServer(checkOrSubmit) {
 								// Compare chosen alternatives with the right ones
 								for(var i = 0; i < question_alternatives.length; i++) {
 									if(question_alternatives[i]['alternativeChecked'] != question['questionAlternatives'][i]['alternativeChecked']) {
-                    // Here we have different answers, let user know and store as failed
+										// Here we have different answers, let user know and store as failed
 										$('#quizWrong').remove();
-                    if (checkOrSubmit == 1) {
-                      checksLeft = handleChecks(checksLeft);
-                      $('#question_list').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect. You have ' + checksLeft + ' check(s) left.</p>');
-                      $('#quizWrong').focus();
-                      return false;
-                    } else if (checkOrSubmit == 2) {
-                      //$('#quizContainer').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect.</p>');
-                      if (questionIds.indexOf(question['questionID']) == -1) {
-                        questionIds.push(question['questionID']);
-                      }
-                    }
+										$('#quizContainer').append('<p id="quizWrong" style="color: red;">Not all answers where correct</p>')
+										return false;
 									}
 								}
 							}
-
-              if (checkOrSubmit == 1) {
-                $('#quizWrong').remove();
-                handleChecks(0);
-                $('#question_list').append('<p id="quizWrong" style="color: green;">All answers are correct. Feel free to submit!</p>');
-                $('#quizWrong').focus();
-                return false;
-              }
-
-              // if there are wrong answers, show feedback and do not save
-              if (questionIds.length > 0) {
-                showFeedback(questionIds);
-                return false;
-              }
 
 							// Here ALL questions where correct
 							$('#quizWrong').remove();
@@ -318,8 +281,7 @@ function sendToServer(checkOrSubmit) {
 								else{
 									var r = window.confirm("Quiz already approved, did not send to mentor for correction!:!")
 									if (r == true) {
-                    showFeedback([]);
-										//window.location.href = getAppRoot();
+										window.location.href = getAppRoot();
 									} else {
 
 									}
@@ -401,45 +363,4 @@ function sendToServer(checkOrSubmit) {
 
 	});
 
-}
-
-function handleChecks(checksLeft) {
-  var checksLeft = checksLeft - 1;
-  if (checksLeft < 0) {
-    checksLeft = 0;
-  }
-  $('#checksLeft').val(checksLeft);
-  if (checksLeft == 0) {
-    $('#checkButton').prop('disabled', true);
-  }
-  return checksLeft;
-}
-
-function backToMainPage() {
-  window.location.href = getHostRoot() + '/dhis/apps/coursetaker/takecourse.html';
-}
-
-function showFeedback(questionIds) {
-  console.log(questionIds);
-  console.log(questionIds.length);
-  $.each(questionIds, function(index, value) {
-    console.log(value);
-    $('#' + value).find('div#incorrect').removeClass('hide');
-  });
-  $('#submitButton, #checkButton').addClass('hide');
-  $('#backButton').removeClass('hide');
-  $('#submitButton').html('Submit');
-
-  if (questionIds.length == 0 && $('#nextQuizId').val() != 0) {
-    // no wrong answers and more quizes available, show Next button
-    $('#nextButton').removeClass('hide');
-  }
-}
-
-function nextModule() {
-  var url = window.location;
-  var courseId = getURLParameter(url, 'course_id');
-  var nextQuizId = $('#nextQuizId').val();
-
-  window.location.href = 'questions.html?quiz_id=' + nextQuizId + '&course_id=' + courseId;
 }

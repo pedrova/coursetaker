@@ -3,7 +3,7 @@
  */
 
 function getCourseResourceURL() {
-    var url = getHostRoot() + '/api/systemSettings/VJFS_courses';
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
     return url;
 }
 
@@ -91,7 +91,7 @@ function displayCoursesTaken() {
 
 function doLabels(username) {
     var username = username;
-    var url = getHostRoot() + '/api/systemSettings/VJFS_'+username+'_quizes';
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_'+username+'_quizes';
 
     $.ajax({
       url: url,

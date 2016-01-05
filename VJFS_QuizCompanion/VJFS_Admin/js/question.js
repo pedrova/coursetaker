@@ -3,7 +3,7 @@
  */
 
 function getQuestionResourceURL() {
-    var url = getHostRoot() + '/api/systemSettings/VJFS_questions';
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_questions';
     return url;
 }
 

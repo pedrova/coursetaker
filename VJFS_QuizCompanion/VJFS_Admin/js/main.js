@@ -11,7 +11,7 @@ String.prototype.isEmpty = function() {
  * @returns {string} : the currently root hostname
  */
 function getHostRoot() {
-	return location.protocol + '//' + location.hostname;
+	return location.protocol + '//' + location.hostname + ':' + location.port;
 }
 
 /**
@@ -20,7 +20,7 @@ function getHostRoot() {
  * @returns {string} : the currently root url for the app
  */
 function getAppRoot() {
-	return getHostRoot() + '/apps/coursewriter';
+	return getHostRoot() + '/dhis/apps/coursewriter';
 }
 
 /**
@@ -101,7 +101,7 @@ function setupBloodHound(div_id, name, data, display_key_function, suggestion_fu
 function isCustomizer(handler) {
 	// Create URL to fetch user data from (was not possible to use "fields" and "filters" here?)
 	// If so then last part of URL would be: /api/me.json?fields=userCredentials[userAuthorityGroups]
-	var url = getHostRoot() + '/api/me';
+	var url = getHostRoot() + '/dhis/api/me';
 
 	// Get information as json object
 	$.ajax({
@@ -182,8 +182,8 @@ function navBarElements(){
 }
 
 function isCourseAttendant(handler){
-	var meurl = getHostRoot() + '/api/me';
-	var courseurl = getHostRoot() + '/api/systemSettings/VJFS_courses';
+	var meurl = getHostRoot() + '/dhis/api/me';
+	var courseurl = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
 	$.ajax({
 		url: meurl,
 		dataType: 'json'
@@ -213,8 +213,8 @@ function isCourseAttendant(handler){
 	});
 }
 function isCourseMentor(handler){
-	var meurl = getHostRoot() + '/api/me';
-	var courseurl = getHostRoot() + '/api/systemSettings/VJFS_courses';
+	var meurl = getHostRoot() + '/dhis/api/me';
+	var courseurl = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
 	$.ajax({
 		url: meurl,
 		dataType: 'json'

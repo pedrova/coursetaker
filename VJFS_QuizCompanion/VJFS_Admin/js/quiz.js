@@ -4,7 +4,7 @@
 
 
 function getQuizResourceURL() {
-    var url = getHostRoot() + '/api/systemSettings/VJFS_quizes';
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_quizes';
     return url;
 }
 
@@ -66,7 +66,7 @@ function getImages(handler) {
 }
 function getImageResourceURL(){
     var quiz_id = getURLParameter(window.location, 'quiz_id');
-    var url = getHostRoot() + '/api/systemSettings/VJFS_Images_' + quiz_id;
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_Images_' + quiz_id;
     console.log(url);
     return url;
 }

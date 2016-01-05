@@ -94,13 +94,7 @@
 		var quiz_id = getURLParameter(url, 'quiz_id');
 
 		// Need to check if admin is logged in
-		isCustomizer(function(isCustomizer){
-
-			if(!isCustomizer) {
-				$('#main_div').empty();
-				$('#main_div').html('<br><div class="col-xs-3"></div><div class="container col-xs-6 list-group"><label class="active list-group-item text-center">Must be Superuser to use this App</label></div>');
-				return;
-			}
+		
 
 			// Check if device is mobile
 			mobileCheck();
@@ -198,7 +192,7 @@
 					});
 				}
 			});
-		});
+	
 
 	</script>
   </body>
