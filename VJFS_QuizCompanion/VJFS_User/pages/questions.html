@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<style>
+#ajaxSpinnerImage {height:20px, padding-top:30px;}
+#ajaxSpinnerImage {display:none;}
+</style>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -17,10 +21,28 @@
     <![endif]-->
 </head>
 <body>
+	
+
 	<nav class="navbar navbar-default" role="navigation">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="../takecourse.html">Course Taker</a>
+
+		<div class='row'>
+			<div class="col-xs-5">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="../takecourse.html">Course Taker</a>
+					
+				</div>
+			</div>
+			<div class="col-xs-5">
+				<div id="ajaxLoadingText">
+					<a class="navbar-brand">Loading Data</a>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<img src='' id="ajaxSpinnerImage" title="working...">
+			</div>
+
 		</div>
+
 	</nav>
 	<div class="container" id="main_div">
 
@@ -37,6 +59,19 @@
 	<script src="../js/course.js"></script>
 	<script src="../js/quiz.js"></script>
 	<script>
+		var imageLoaderURL = getAppRoot() + '/img/loading.gif';
+		document.getElementById('ajaxSpinnerImage').src = imageLoaderURL;
+
+		$(document)
+		.ajaxStart(function(){
+		    $("#ajaxLoadingText").show();
+		    $("#ajaxSpinnerImage").show();
+		})
+		.ajaxStop(function(){
+		    $("#ajaxLoadingText").hide();
+		    $("#ajaxSpinnerImage").hide();
+		});
+
 		var winW = window.outerWidth;
 		if(winW < 768){
 			$('#navbar').collapse("hide");

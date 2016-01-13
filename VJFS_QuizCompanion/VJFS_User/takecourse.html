@@ -20,19 +20,29 @@
 <nav class="navbar navbar-default" role="navigation">
   <div class="navbar-header">
     <a class="navbar-brand" href="takecourse.html">Course Taker</a>
-    <a class="navbar-brand hide" href="javascript:resetData();">Reset user data</a>
-    <a class="navbar-brand hide" href="javascript:setInitialData();">Add course contents</a>
+    <a class="navbar-brand" href="/dhis/">Back to DHIS Dashboard</a>
   </div>
 </nav>
+<div class='row'>
+  <div class="col-xs-1">
+    
+  </div>
+  <div class="col-xs-9">
+    <div id="user_score">
 
+    </div>
+  </div>
+  <div class="col-xs-2">
+  </div>
+
+</div>
 <div class="container" id="main_div">
 
 </div>
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script
-  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
@@ -65,6 +75,7 @@
   $(document).ready(function(){
     navBarElements();
     displayCourses();
+    showPoints();
  
   });
 </script>

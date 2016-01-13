@@ -101,8 +101,10 @@ function displayQuizesHelper(course, level){
 			});
 
 
-
+			//counter for labeling quizes with numberation instead ot quizlevel
+			var counter = 0;
 			for(quiz_key in course_quizes) {
+				counter++;
 
 				if($("#"+course['courseID']+":contains('"+course_quizes[quiz_key].quizTitle+"')").length == 0) {
 
@@ -114,12 +116,19 @@ function displayQuizesHelper(course, level){
 								t += '<a href="pages/questions.html?quiz_id='+ course_quizes[quiz_key].quizID + '&course_id=';
 								t += course['courseID']+'" id="'+course_quizes[quiz_key].quizID+'_list" class="list-group-item">';
 							}else{
-
-								t += '<a href="#';
-								t += '" id="'+course_quizes[quiz_key].quizID+'_list" class="list-group-item disabled">';
+								t += '<a href="pages/questions.html?quiz_id='+ course_quizes[quiz_key].quizID + '&course_id=';
+								t += course['courseID']+'" id="'+course_quizes[quiz_key].quizID+'_list" class="list-group-item">';
+								//t += '<a href="#';
+								//trying to fix next course activation
+								//t += '" id="'+course_quizes[quiz_key].quizID+'_list" class="list-group-item enabled">';
+								//doing it like this makes you able to take all courses
+								//t += '" id="'+course_quizes[quiz_key].quizID+'_list" class="list-group-item enabled">';
 							}
 
-							t += course_quizes[quiz_key].quizLevel+' - '+course_quizes[quiz_key].quizTitle;
+							//this line makes the quizes look like: ex 1(Quizlevel)- QuizTitle
+							//t += course_quizes[quiz_key].quizLevel+' - '+course_quizes[quiz_key].quizTitle;
+							//this line makes the quiztitle to look like numeration + QuizTitle ie: second quiz in course: "2 - QuizTitle"
+							t += counter+'- '+course_quizes[quiz_key].quizTitle;
 							t += '<div id='+course_quizes[quiz_key].quizID+'></div>'
 							t +='</a>';
 
@@ -323,6 +332,32 @@ function getCourses(handler) {
 	});
 }
 
+function showPoints(){
+	getUserQuizes(function(userQuizes){
+		var points = 0;
+		if(userQuizes!=null){
+			getCourses(function(courses){
+				for(key in userQuizes['quizes']){
+					for(keys in courses['courses']){
+						if(userQuizes['quizes'][key].courseID == courses['courses'][keys].courseID){
+							points += 1*(courses['courses'][keys].courseLevel)
+						}
+					}
+				}
+				//console.log(points);
+				if(points <= 0){
+					$('#user_score').append('<h4> Your total score: ' + points +', start taking courses and get points!</h4>');
+				} else {
+					$('#user_score').append('<h4> Your total score: ' + points +'</h4>');
+				}
+				
+			});
+		} else {
+			$('#user_score').append('<h4> Your total score: ' + points +', start taking courses and get points!</h4>');
+		}
+		
+	});
+}
 
 function getQuizes(handler) {
 

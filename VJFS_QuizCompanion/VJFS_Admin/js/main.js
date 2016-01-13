@@ -11,7 +11,9 @@ String.prototype.isEmpty = function() {
  * @returns {string} : the currently root hostname
  */
 function getHostRoot() {
-	return location.protocol + '//' + location.hostname + ':' + location.port;
+	return location.protocol + '//' + location.hostname;
+	//use this when DHIS is using portnumber in URL scheme.
+	//return location.protocol + '//' + location.hostname + ':' + location.port;
 }
 
 /**

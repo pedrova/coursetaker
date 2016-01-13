@@ -52,7 +52,7 @@ function navBarElements(){
 var mainWindow, quizWindow;
 
 function openWin() {
-  mainWindow = window.open("/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
+  mainWindow = window.open("/dhis/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
   quizWindow = window.open("takecourse.html", "quizPanel", "width=250, height=250, location=yes, scrollbars=yes");
   if (!quizWindow || quizWindow.closed
     || typeof quizWindow.closed == 'undefined') {

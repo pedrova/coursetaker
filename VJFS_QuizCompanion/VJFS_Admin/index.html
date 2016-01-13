@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,6 +21,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+
   <body>
   <nav class="navbar navbar-default" role="navigation">
       <div class="navbar-header">
@@ -28,8 +30,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
+
           </button>
+          
           <a class="navbar-brand" href="index.html">Course Writer</a>
+          <a class="navbar-brand" href = "/Users/Farrukh/"> To Dashboard </a>
+
       </div>
   </nav>
     <div class="container" id="main_div">
@@ -77,6 +83,17 @@
     <script src="js/question.js"></script>
     <script src="js/user.js"></script>
     <script>
+        //testing loading spinner
+        /*
+        $(document)
+        .ajaxStart(function(){
+            $("#ajaxSpinnerImage").show();
+        })
+        .ajaxStop(function(){
+            $("#ajaxSpinnerImage").hide();
+        });
+        */
+
         var winW = window.outerWidth;
         if(winW < 768){
             $('#navbar').collapse("hide");
@@ -93,7 +110,7 @@
         $(document).ready(function(){
 
             displayCourses();
-            displayCoursesTaken();
+            //displayCoursesTaken();
         });
 
     </script>
