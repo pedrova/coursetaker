@@ -12,7 +12,7 @@ String.prototype.isEmpty = function() {
  */
 function getHostRoot() {
 	return location.protocol + '//' + location.hostname;
-	//use this when DHIS is using portnumber in URL scheme.
+	//use the following when DHIS is using portnumber in URL scheme:
 	//return location.protocol + '//' + location.hostname + ':' + location.port;
 }
 

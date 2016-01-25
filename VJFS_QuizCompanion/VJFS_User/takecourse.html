@@ -17,12 +17,31 @@
   <![endif]-->
 </head>
 <body>
-<nav class="navbar navbar-default" role="navigation">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="takecourse.html">Course Taker</a>
-    <a class="navbar-brand" href="/dhis/">Back to DHIS Dashboard</a>
-  </div>
-</nav>
+
+
+
+  <nav class="navbar navbar-default" role="navigation">
+
+    <div class='row'>
+      <div class="col-xs-5">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="../takecourse.html">Course Taker</a>
+          
+        </div>
+      </div>
+      <div class="col-xs-5">
+        <div id="ajaxLoadingText">
+          <a class="navbar-brand">Loading Data</a>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <img src='/dhis/api/apps/coursetaker/img/loading.gif' id="ajaxSpinnerImage" title="working...">
+      </div>
+
+    </div>
+
+  </nav>
+
 <div class='row'>
   <div class="col-xs-1">
     
@@ -53,6 +72,16 @@
 <script src="js/mobilecheck.js"></script>
 
 <script>
+
+$(document)
+    .ajaxStart(function(){
+        $("#ajaxLoadingText").show();
+        $("#ajaxSpinnerImage").show();
+    })
+    .ajaxStop(function(){
+        $("#ajaxLoadingText").hide();
+        $("#ajaxSpinnerImage").hide();
+    });
   var winW = window.outerWidth;
   if(winW < 768){
     $('#navbar').collapse("hide");
@@ -73,7 +102,7 @@
   $('#main_div').append(main_layout);
 
   $(document).ready(function(){
-    navBarElements();
+    //navBarElements();
     displayCourses();
     showPoints();
  
