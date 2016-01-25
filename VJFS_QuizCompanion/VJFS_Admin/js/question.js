@@ -156,7 +156,7 @@ function saveQuestion(course_id, quiz_id, question_id) {
             $('#alternatives').children('.alternative').each(function (index){
                 var alternative_checked = $(this).find('#alternativeYN').is(':checked');
                 var alternative_value = $(this).find('#alternativeValue').val();
-
+                var alternative_feedback = $(this).find('#alternativeFeedback').val();
                 // Alternative must have a value
                 // Mark all empty alternatives that they must have a value
                 if(alternative_value.isEmpty()) {
@@ -166,7 +166,7 @@ function saveQuestion(course_id, quiz_id, question_id) {
                     alternativeIsEmpty = true;
                 }
 
-                questionAlternatives.push({"alternativeChecked" : alternative_checked, "alternativeValue" : alternative_value});
+                questionAlternatives.push({"alternativeChecked" : alternative_checked, "alternativeValue" : alternative_value, "alternativeFeedback" : alternative_feedback});
             });
 
             // Return if one or more of alternatives has no value
@@ -186,7 +186,7 @@ function saveQuestion(course_id, quiz_id, question_id) {
             } else {
                 // Here we have a new question
                 questions['questions'].push( {"questionID" : getUniqueID(), "quizID" : quiz_id, "course_id" : course_id, "questionTitle" : questionTitle,
-                    "questionType" : questionType, "questionQuestion" : questionQuestion, "questionAlternatives" : questionAlternatives } );
+                    "questionType" : questionType, "questionQuestion" : questionQuestion, "questionAlternatives" : questionAlternatives} );
             }
         } else {
             // Here we have undefined behaviour
@@ -231,8 +231,7 @@ function deleteQuestion(quiz_id, question_id) {
         }
     });
 }
-
-function addAlternative(alternative_checked, alternative_value) {
+function addAlternative(alternative_checked, alternative_value, alternative_feedback) {
     // Remove error message if one exists
     $('#alternatives_invalid').remove();
 
@@ -252,6 +251,17 @@ function addAlternative(alternative_checked, alternative_value) {
                                         '<button type="button" class="btn btn-danger" onclick="deleteAlternative(' + alternative_id + ');">Delete</button>' +
                                     '</div>' +
                                 '</div>' +
+
+                                '<div class="col-lg-9">' +
+                                    '<div class="input-group pull-left">' +
+                                        '<span class="input-group-addon">' +
+                                            'Feedback ' +
+                                        '</span>' +
+                                        '<input type="text" class="form-control" id="alternativeFeedback" placeholder="Alternative feedback (can be empty)">' +
+                                    '</div>' +
+                                '</div>' +
+
+
                             '</div>');
 
     // Add on checked and value if they are set
@@ -261,6 +271,10 @@ function addAlternative(alternative_checked, alternative_value) {
     if(alternative_value != null) {
         $('#' + alternative_id).find('#alternativeValue').val(alternative_value);
     }
+    if(alternative_feedback != null) {
+        $('#' + alternative_id).find('#alternativeFeedback').val(alternative_feedback);
+    }
+
 }
 
 function deleteAlternative(alternative_id) {

@@ -123,7 +123,8 @@
 
 							// Display alternatives
 							for(key in question['questionAlternatives']) {
-								addAlternative(question['questionAlternatives'][key].alternativeChecked, question['questionAlternatives'][key].alternativeValue);
+								addAlternative(question['questionAlternatives'][key].alternativeChecked, question['questionAlternatives'][key].alternativeValue,
+									question['questionAlternatives'][key].alternativeFeedback);
 							}
 
 							// Display save button

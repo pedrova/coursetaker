@@ -69,7 +69,7 @@ function getImages(handler) {
 function getImageResourceURL(quiz_id){
     //var quiz_id = getURLParameter(window.location, 'quiz_id');
     var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_Images_' + quiz_id;
-    console.log(url);
+    //console.log(url);
     return url;
 }
 
