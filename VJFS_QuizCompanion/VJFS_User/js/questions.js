@@ -287,6 +287,7 @@ function sendToServer(checkOrSubmit) {
 											
 											//$('#question_list').append('<p id="quizWrong" style="color: blue;"> Feedback on question: ' + question['questionTitle'] +', '+ question['questionAlternatives'][i]['alternativeFeedback']  + '</p>');	
 											$('#question_list').append('<p id="quizWrong" style="color: red;">One or more answers are incorrect. You have ' + checksLeft + ' check(s) left.</p>');
+											//Scroll down to where to buttons are. In case elements are not visible from current window location.
 											window.scrollTo(0, document.body.scrollHeight);
 											$('#quizWrong').focus();
 											return false;
@@ -304,6 +305,7 @@ function sendToServer(checkOrSubmit) {
 								$('#quizWrong').remove();
 								handleChecks(0);
 								$('#question_list').append('<p id="quizWrong" style="color: green;">All answers are correct. Feel free to submit!</p>');
+								//Scroll down to where to buttons are. In case elements are not visible from current window location.
 								window.scrollTo(0, document.body.scrollHeight);
 								$('#quizWrong').focus();
 								return false;
@@ -339,6 +341,7 @@ function sendToServer(checkOrSubmit) {
 									saveUserQuiz(quiz_id);
 								} else {
 									var r = window.confirm("Quiz already approved, did not send for submission!")
+									//Scroll down to where to buttons are. In case elements are not visible from current window location.
 									window.scrollTo(0, document.body.scrollHeight);
 									if (r == true) {
 										showFeedback([]);
@@ -413,6 +416,7 @@ function sendToServer(checkOrSubmit) {
 									saveUserAnswers(answers);
 								} else {
 									var r = window.confirm("Quiz already approved, did not send to mentor for correction")
+									//Scroll down to where to buttons are. In case elements are not visible from current window location.
 									window.scrollTo(0, document.body.scrollHeight);
 									if (r == true) {
 										window.location.href = getAppRoot();
