@@ -110,7 +110,7 @@ function displayMentors(course) {
 function getUsers(handler) {
     // Get URL from where to fetch users's json
     // (This URL will only retrieve id, name and username)
-    var url = getHostRoot() + '/api/users.json?fields=name,id,userCredentials[code]';
+    var url = getHostRoot() + '/dhis/api/users.json?fields=name,id,userCredentials[code]&paging=false';
 
     // Get quiz's as json object and on success use handler function
     $.ajax({
@@ -126,7 +126,7 @@ function getUsers(handler) {
 function getUserByUsername(username, handler) {
     // Get URL from where to fetch users's json
     // (This URL will only retrieve id, name and username)
-    var url = getHostRoot() + '/api/users.json?fields=name,id,userCredentials[code]&filter=userCredentials.code:like:' + username;
+    var url = getHostRoot() + '/dhis/api/users.json?fields=name,id,userCredentials[code]&filter=userCredentials.code:like:' + username+'&paging=false';
 
     // Get quiz's as json object and on success use handler function
     $.ajax({
@@ -142,7 +142,7 @@ function getUserByUsername(username, handler) {
 function getUserByID(ID, handler) {
     // Get URL from where to fetch users's json
     // (This URL will only retrieve id, name and username)
-    var url = getHostRoot() + '/api/users.json?fields=name,id,userCredentials[code]&filter=id' + ID;
+    var url = getHostRoot() + '/dhis/api/users.json?fields=name,id,userCredentials[code]&filter=id' + ID + 'paging=false';
 
     // Get quiz's as json object and on success use handler function
     $.ajax({
@@ -198,7 +198,7 @@ function deleteAttendant(course_id, attendantUsername) {
     if(course_id == null || attendantUsername.isEmpty()) return;
 
     // Create URL to POST updated courses to
-    var url = getHostRoot() + '/api/systemSettings/courses';
+    var url = getHostRoot() + '/dhis/api/systemSettings/courses';
 
     getCourses(function(courses) {
 
@@ -267,7 +267,7 @@ function deleteMentor(course_id, mentorUsername) {
     if(course_id == null || mentorUsername.isEmpty()) return;
 
     // Create URL to POST updated courses to
-    var url = getHostRoot() + '/api/systemSettings/courses';
+    var url = getHostRoot() + '/dhis/api/systemSettings/courses';
 
     getCourses(function(courses) {
 

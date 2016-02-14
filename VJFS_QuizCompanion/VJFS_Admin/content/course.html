@@ -86,80 +86,72 @@
 	<script src="../js/typeahead.bundle.min.js"></script>
 	<!-- <script src="../summernote/summernote.min.js"></script> -->
 	<script>
-		var winW = window.outerWidth;
-		if(winW < 768){
-			$('#navbar').collapse("hide");
-		}
-		navBarElements();
-		// Fetch URL
-		var url = window.location;
+	var winW = window.outerWidth;
+	if (winW < 768) {
+		$('#navbar').collapse("hide");
+	}
+	//navBarElements();
+	// Fetch URL
+	var url = window.location;
 
-		// Check if a specific course is chosen
-		var course_id = getURLParameter(url, 'course_id');
+	// Check if a specific course is chosen
+	var course_id = getURLParameter(url, 'course_id');
 
-		// Need to check if admin is logged in
-		isCustomizer(function(isCustomizer){
+	// Need to check if admin is logged in
 
-			if(!isCustomizer) {
-				$('#main_div').empty();
-				$('#main_div').html('<br><div class="col-xs-3"></div><div class="container col-xs-6 list-group"><label class="active list-group-item text-center">Must be Superuser to use this App</label></div>');
-				return;
-			}
 
-			// Check if device is mobile
-			mobileCheck();
+		// Check if device is mobile
+		mobileCheck();
 
-			// Ready whenever you are - document!
-			$(document).ready(function(){
+		// Ready whenever you are - document!
+		$(document).ready(function() {
 
-        getCourses(function(courses){
-          var numCourses = 0;
-          // Fetch number of courses
-          if(courses != null) {
-            numCourses = courses.courses.length;
-          } else {
-            numCourses++;
-          }
-          // Display level options
-          for(var i = 0; i < numCourses; i++) {
-            $('#courseLevel').append('<option value="' + (i+1) + '">' + (i + 1) + '</option>');
-          }
-        });
-
-				if(course_id != null) {
-
-					// Retrieve course
-					getCourse(course_id, function(course) {
-
-						if(course != null) {
-							// Display course and a save button
-							// Remember that courseDescription is a textarea, so must un escape \n before displaying content
-							$('#courseHeader').html(course['courseTitle']);
-							$('#courseTitle').val(course['courseTitle']);
-              $('#courseLevel').val(course['courseLevel']);
-							//$('#courseDescription').val(course['courseDescription'].replace(/\\\\n/g, '\n'));
-							//$('#courseDescription').code(JSON.parse(course['courseDescription']));
-							$('#courseSave').html('Save Course');
-
-							// Display quiz's for course
-							displayQuizes(course);
-
-							// Display attendant's for course
-							displayAttendants(course);
-
-							// Display mentor's for course
-							displayMentors(course);
-						}
-					});
+			getCourses(function(courses) {
+				var numCourses = 0;
+				// Fetch number of courses
+				if (courses != null) {
+					numCourses = courses.courses.length;
 				} else {
-					// Display a new course label and an add course button
-					$('#courseHeader').html('New Course');
-					$('#courseSave').html('Add Course');
+					numCourses++;
+				}
+				// Display level options
+				for (var i = 0; i < numCourses; i++) {
+					$('#courseLevel').append('<option value="' + (i + 1) + '">' + (i + 1) + '</option>');
 				}
 			});
+
+			if (course_id != null) {
+
+				// Retrieve course
+				getCourse(course_id, function(course) {
+
+					if (course != null) {
+						// Display course and a save button
+						// Remember that courseDescription is a textarea, so must un escape \n before displaying content
+						$('#courseHeader').html(course['courseTitle']);
+						$('#courseTitle').val(course['courseTitle']);
+						$('#courseLevel').val(course['courseLevel']);
+						//$('#courseDescription').val(course['courseDescription'].replace(/\\\\n/g, '\n'));
+						//$('#courseDescription').code(JSON.parse(course['courseDescription']));
+						$('#courseSave').html('Save Course');
+
+						// Display quiz's for course
+						displayQuizes(course);
+
+						// Display attendant's for course
+						displayAttendants(course);
+
+						// Display mentor's for course
+						displayMentors(course);
+					}
+				});
+			} else {
+				// Display a new course label and an add course button
+				$('#courseHeader').html('New Course');
+				$('#courseSave').html('Add Course');
+			}
 		});
 
-
-  	</script>
+</script>
   </body>
 </html>

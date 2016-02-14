@@ -17,22 +17,51 @@
   <![endif]-->
 </head>
 <body>
-<nav class="navbar navbar-default" role="navigation">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="takecourse.html">Course Taker</a>
-    <a class="navbar-brand hide" href="javascript:resetData();">Reset user data</a>
-    <a class="navbar-brand hide" href="javascript:setInitialData();">Add course contents</a>
-  </div>
-</nav>
 
+
+
+  <nav class="navbar navbar-default" role="navigation">
+
+    <div class='row'>
+      <div class="col-xs-5">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="../takecourse.html">Course Taker</a>
+          
+        </div>
+      </div>
+      <div class="col-xs-5">
+        <div id="ajaxLoadingText">
+          <a class="navbar-brand">Loading Data</a>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <img src='/dhis/api/apps/coursetaker/img/loading.gif' id="ajaxSpinnerImage" title="working...">
+      </div>
+
+    </div>
+
+  </nav>
+
+<div class='row'>
+  <div class="col-xs-1">
+    
+  </div>
+  <div class="col-xs-9">
+    <div id="user_score">
+
+    </div>
+  </div>
+  <div class="col-xs-2">
+  </div>
+
+</div>
 <div class="container" id="main_div">
 
 </div>
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script
-  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
@@ -43,20 +72,22 @@
 <script src="js/mobilecheck.js"></script>
 
 <script>
+
+$(document)
+    .ajaxStart(function(){
+        $("#ajaxLoadingText").show();
+        $("#ajaxSpinnerImage").show();
+    })
+    .ajaxStop(function(){
+        $("#ajaxLoadingText").hide();
+        $("#ajaxSpinnerImage").hide();
+    });
   var winW = window.outerWidth;
   if(winW < 768){
     $('#navbar').collapse("hide");
   }
-  navBarElements();
+  
   // Need to check if admin is logged in
-  isCourseAttendant(function(isCourseAttendant) {
-
-    if (!isCourseAttendant) {
-      $('#main_div').empty();
-      $('#main_div').html('<br><div class="col-xs-3"></div><div class="container col-xs-6 list-group"><label class="active list-group-item text-center">Must be enrolled in course to use this App</label></div>');
-      return;
-    }
-  });
   var main_layout = '<div class="row">';
 
   main_layout += '<label class="list-group-item active">';
@@ -71,10 +102,10 @@
   $('#main_div').append(main_layout);
 
   $(document).ready(function(){
+    //navBarElements();
     displayCourses();
-    /*window.setInterval(function () {
-     displayCourses();
-     }, 1000);*/
+    showPoints();
+ 
   });
 </script>
 

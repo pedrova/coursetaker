@@ -3,6 +3,7 @@
 	"name" : "Course Taker",
 	"description" : "Take a DHIS2 user course.",
 	"launch_path" : "index.html",
+	"installs_allowed_from" : ["*"],
 
 	"icons": {
 		 "16":null,
@@ -17,7 +18,8 @@
 	"default_locale" : "en",
 	"activities" : {
 		"dhis" : {
-			"href" : "*"
+			"href" : "*",
+			"namespace":"coursetaker"
 		}
 	}
 }

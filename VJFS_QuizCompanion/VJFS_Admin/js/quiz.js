@@ -4,7 +4,7 @@
 
 
 function getQuizResourceURL() {
-    var url = getHostRoot() + '/api/systemSettings/VJFS_quizes';
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_quizes';
     return url;
 }
 
@@ -52,7 +52,9 @@ function getQuizes(handler) {
 }
 function getImages(handler) {
     // Get URL from where to fetch quiz's json
-    var url = getImageResourceURL();
+    var quiz_id = getURLParameter(window.location, 'quiz_id');
+
+    var url = getImageResourceURL(quiz_id);
 
     // Get quiz's as json object and on success use handler function
     $.ajax({
@@ -64,10 +66,10 @@ function getImages(handler) {
         handler(null);
     });
 }
-function getImageResourceURL(){
-    var quiz_id = getURLParameter(window.location, 'quiz_id');
-    var url = getHostRoot() + '/api/systemSettings/VJFS_Images_' + quiz_id;
-    console.log(url);
+function getImageResourceURL(quiz_id){
+    //var quiz_id = getURLParameter(window.location, 'quiz_id');
+    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_Images_' + quiz_id;
+    //console.log(url);
     return url;
 }
 
@@ -103,7 +105,21 @@ function getQuiz(quiz_id, handler) {
         handler(quiz[0]);
     });
 }
+function setImages(quizID, images, handler){
+     var url = getImageResourceURL(quizID);
 
+    // Update quiz images on server
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: images,
+        contentType: 'text/plain'
+    }).success(function(data) {
+        handler(data);
+    }).error(function() {
+        handler(null);
+    });
+}
 function saveQuiz(course_id, quiz_id) {
     // Create URL to POST new quiz to
     var url = getQuizResourceURL();
@@ -133,7 +149,7 @@ function saveQuiz(course_id, quiz_id) {
         }
     }
 
-    var quizReplaceImages = description2.replace(re, ' imageplaceholder <p>Click on image to enlarge</p>');
+    var quizReplaceImages = description2.replace(re, ' imageplaceholder ');
     //console.log(quizReplaceImages);
     //console.log(quizReplaceImages);
 
@@ -147,6 +163,7 @@ function saveQuiz(course_id, quiz_id) {
 
     getQuizes(function(quizes) {
 
+        var quizID2 = '';
         // Check if this is the first quiz
         if(quizes == null) {
             quizes = { "quizes" : [] };
@@ -163,13 +180,15 @@ function saveQuiz(course_id, quiz_id) {
             } else {
                  quiz[0].quizDescription = quizDescription;
             }
+            quizID2 = getURLParameter(window.location, 'quiz_id');
         } else {
+            quizID2 = getUniqueID();
             // Here we have a new quiz
             if(imagesReplaced == true){
-                quizes['quizes'].push( {"quizID" : getUniqueID(), "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : JSON.stringify(quizReplaceImages), "quizLevel" : quizLevel } );
+                quizes['quizes'].push( {"quizID" : quizID2, "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : JSON.stringify(quizReplaceImages), "quizLevel" : quizLevel } );
 
             } else {
-                quizes['quizes'].push( {"quizID" : getUniqueID(), "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : quizDescription, "quizLevel" : quizLevel } );
+                quizes['quizes'].push( {"quizID" : quizID2, "courseID" : course_id, "quizTitle" : quizTitle, "quizDescription" : quizDescription, "quizLevel" : quizLevel } );
 
             }
         }
@@ -177,12 +196,12 @@ function saveQuiz(course_id, quiz_id) {
         // Update quizes on server and go to menu over quizes
         
         setQuizes(JSON.stringify(quizes), function() {
-            setImages(JSON.stringify(images), function() {
-                //window.location.href = getAppRoot() + '/content/course.html?course_id=' + course_id;
+            setImages(quizID2, JSON.stringify(images), function() {
+                window.location.href = getAppRoot() + '/content/course.html?course_id=' + course_id;
             });
         });
         
-        console.log("description2 : " + description2);
+        //console.log("description2 : " + description2);
     });
 }
 

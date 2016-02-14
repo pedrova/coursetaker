@@ -3,6 +3,7 @@
 	"name" : "DHIS2 Quiz Companion",
 	"description" : "Quiz Companion.",
 	"launch_path" : "index.html",
+	"installs_allowed_from" : ["*"],
 
 	"icons": {
 		 "16":null,

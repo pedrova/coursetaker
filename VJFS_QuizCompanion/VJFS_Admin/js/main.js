@@ -12,6 +12,8 @@ String.prototype.isEmpty = function() {
  */
 function getHostRoot() {
 	return location.protocol + '//' + location.hostname;
+	//use the following when DHIS is using portnumber in URL scheme:
+	//return location.protocol + '//' + location.hostname + ':' + location.port;
 }
 
 /**
@@ -20,7 +22,7 @@ function getHostRoot() {
  * @returns {string} : the currently root url for the app
  */
 function getAppRoot() {
-	return getHostRoot() + '/apps/coursewriter';
+	return getHostRoot() + '/dhis/apps/coursewriter';
 }
 
 /**
@@ -101,7 +103,7 @@ function setupBloodHound(div_id, name, data, display_key_function, suggestion_fu
 function isCustomizer(handler) {
 	// Create URL to fetch user data from (was not possible to use "fields" and "filters" here?)
 	// If so then last part of URL would be: /api/me.json?fields=userCredentials[userAuthorityGroups]
-	var url = getHostRoot() + '/api/me';
+	var url = getHostRoot() + '/dhis/api/me';
 
 	// Get information as json object
 	$.ajax({
@@ -162,28 +164,12 @@ function mobileCheck() {
 }
 
 function navBarElements(){
-	isCourseAttendant(function(isCourseAttendant) {
-		if(!isCourseAttendant){
-			document.getElementById("showcourse").style.display = "none";
-			console.log();
-		}
-	});
-	isCourseMentor(function(isCourseMentor) {
-		if(!isCourseMentor){
-			document.getElementById("showmentor").style.display = "none";
-		}
-	});
-	isCustomizer(function(isCustomizer) {
-		if(!isCustomizer) {
-			document.getElementById("showadmin").style.display = "none";
-			document.getElementById("showstat").style.display = "none";
-		}
-	});
+
 }
 
 function isCourseAttendant(handler){
-	var meurl = getHostRoot() + '/api/me';
-	var courseurl = getHostRoot() + '/api/systemSettings/VJFS_courses';
+	var meurl = getHostRoot() + '/dhis/api/me';
+	var courseurl = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
 	$.ajax({
 		url: meurl,
 		dataType: 'json'
@@ -213,8 +199,8 @@ function isCourseAttendant(handler){
 	});
 }
 function isCourseMentor(handler){
-	var meurl = getHostRoot() + '/api/me';
-	var courseurl = getHostRoot() + '/api/systemSettings/VJFS_courses';
+	var meurl = getHostRoot() + '/dhis/api/me';
+	var courseurl = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
 	$.ajax({
 		url: meurl,
 		dataType: 'json'
