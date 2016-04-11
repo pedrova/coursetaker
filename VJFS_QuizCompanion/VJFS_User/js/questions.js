@@ -451,7 +451,7 @@ function handleChecks(checksLeft) {
 
 function backToMainPage() {
 	var DHISFolder = getDHISInstallFolder();
-  	window.location.href = getHostRoot() + '/' + DHISFolder + '/apps/coursetaker/takecourse.html';
+  	window.location.href = getHostRoot() + '/' + DHISFolder + '/api/apps/coursetaker/takecourse.html';
 }
 
 
