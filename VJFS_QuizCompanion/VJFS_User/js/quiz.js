@@ -5,7 +5,8 @@ function getUserQuizes(handler) {
 
         var username = user.userCredentials.code;
         // Get URL from where to fetch quiz's json
-        var url = getHostRoot() + '/dhis/api/dataStore/coursetaker/VJFS_'+username+'_quizes';
+        var DHISFolder = getDHISInstallFolder();
+        var url = getHostRoot() + '/' + DHISFolder + '/api/dataStore/coursetaker/VJFS_'+username+'_quizes';
 
         // Get quiz's as json object and on success use handler function
         $.ajax({
@@ -32,8 +33,8 @@ function setUserQuizes(exists, quizes, handler) {
     getMyUserName(function(user){
 
         var username = user.userCredentials.code;
-
-        var url = getHostRoot() + '/dhis/api/dataStore/coursetaker/VJFS_'+username+'_quizes';
+        var DHISFolder = getDHISInstallFolder();
+        var url = getHostRoot() + '/' + DHISFolder + '/api/dataStore/coursetaker/VJFS_'+username+'_quizes';
 
       // Update courses on server
       $.ajax({
@@ -65,7 +66,8 @@ function getImages(handler) {
 }
 function getImageResourceURL(){
     var quiz_id = getURLParameter(window.location, 'quiz_id');
-    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_Images_' + quiz_id;
+    var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_Images_' + quiz_id;
     //console.log(url);
     return url;
 }
@@ -127,7 +129,8 @@ function getUserQuestions(handler) {
 
 			var username = user.userCredentials.code;
 		// Get URL from where to fetch quiz's json
-			var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_'+username+'_questions';
+    var DHISFolder = getDHISInstallFolder();
+			var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_'+username+'_questions';
 
 			// Get question's as json object and on success use handler function
 			$.ajax({
@@ -156,7 +159,8 @@ function setUserQuestions(exists, questions, handler) {
 
         var username = user.userCredentials.code;
     // Get URL from where to fetch courses json
-        var url = getHostRoot() + '/dhis/api/dataStore/coursetaker/VJFS_'+username+'_questions';
+    var DHISFolder = getDHISInstallFolder();
+        var url = getHostRoot() + '/'+ DHISFolder +'/api/dataStore/coursetaker/VJFS_'+username+'_questions';
 
     // Update courses on server
         $.ajax({
@@ -218,7 +222,8 @@ function saveUserAnswers(answers){
 
 function getMyUserName(handler) {
     // Get URL from where to fetch quiz's json
-    var url = getHostRoot() + '/dhis/api/me';
+    var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/' + DHISFolder +'/api/me';
 
     // Get the users information
     $.ajax({

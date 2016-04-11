@@ -3,7 +3,8 @@
  */
 
 function getCourseResourceURL() {
-    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
+  var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/'+ DHISFolder +'/api/systemSettings/VJFS_courses';
     return url;
 }
 
@@ -91,7 +92,8 @@ function displayCoursesTaken() {
 
 function doLabels(username) {
     var username = username;
-    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_'+username+'_quizes';
+    var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/' + DHISFolder +'/api/systemSettings/VJFS_'+username+'_quizes';
 
     $.ajax({
       url: url,

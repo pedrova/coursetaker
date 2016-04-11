@@ -26,6 +26,16 @@ function getURLParameter(url, parameter_key)
 		}
 	}
 }
+/**
+* Function will return the subfolder name for the DHIS installation on the server
+* which is varies from DHIS installation to installation.
+* ie, this function will return "dhis" in this url: http://localhost:8080/dhis/api/apps/takecourse/index.html
+*/
+function getDHISInstallFolder(){
+  var pathArray = window.location.pathname.split( '/' );
+  //console.log(pathArray[1]);
+  return pathArray[1]
+}
 
 /**
 * Function will retrieve the root URL for where the APP resides.
@@ -33,7 +43,8 @@ function getURLParameter(url, parameter_key)
 * @returns {string} : the currently root url for the app
 */
 function getAppRoot() {
-	return getHostRoot() + '/dhis/apps/coursetaker';
+   var DHISFolder = getDHISInstallFolder();
+	return getHostRoot() + '/' + DHISFolder + '/apps/coursetaker';
 }
 
 /**
@@ -52,7 +63,8 @@ function navBarElements(){
 var mainWindow, quizWindow;
 
 function openWin() {
-  mainWindow = window.open("/dhis/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
+  var DHISFolder = getDHISInstallFolder();
+  mainWindow = window.open("/"+ DHISFolder + "/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
   quizWindow = window.open("takecourse.html", "quizPanel", "width=250, height=250, location=yes, scrollbars=yes");
   if (!quizWindow || quizWindow.closed
     || typeof quizWindow.closed == 'undefined') {
@@ -75,7 +87,8 @@ function getUserLevel(handler) {
 
     var username = user.userCredentials.code;
     // Get URL from where to fetch quiz's json
-    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_'+username+'_level';
+     var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/'+ DHISFolder +'/api/systemSettings/VJFS_'+username+'_level';
 
     // Get quiz's as json object and on success use handler function
     $.ajax({

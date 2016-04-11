@@ -146,8 +146,8 @@ function displayQuestions(quiz){
 }
 
 function getUserQuestions(student_username, handler){
-
-	var urlStudent = getHostRoot() + '/dhis/api/systemSettings/VJFS_' + student_username + '_questions';
+	var DHISFolder = getDHISInstallFolder();
+	var urlStudent = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_' + student_username + '_questions';
 	var uq = [];
 
 	// Get quizs as json object and on success use handler function
@@ -169,7 +169,8 @@ function getUserQuestions(student_username, handler){
 function getQuestions(handler) {
 
 	// Get URL from where to fetch quiz's json
-	var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_questions';
+	var DHISFolder = getDHISInstallFolder();
+	var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_questions';
 
 	// Get question's as json object and on success use handler function
 	$.ajax({
@@ -449,7 +450,8 @@ function handleChecks(checksLeft) {
 }
 
 function backToMainPage() {
-  window.location.href = getHostRoot() + '/dhis/apps/coursetaker/takecourse.html';
+	var DHISFolder = getDHISInstallFolder();
+  	window.location.href = getHostRoot() + '/' + DHISFolder + '/apps/coursetaker/takecourse.html';
 }
 
 

@@ -3,7 +3,8 @@
 function displayCourses() {
 
 	// Get URL to retrieve json object from
-	var url = getHostRoot() + '/dhis/api/systemSettings/courses';
+	var DHISFolder = getDHISInstallFolder();
+	var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/courses';
 
   getUserLevel(function(level){
     console.log('level: '+level);
@@ -72,7 +73,8 @@ function displayCourses() {
 
 function getMyUserName(handler) {
     // Get URL from where to fetch quiz's json
-    var url = getHostRoot() + '/dhis/api/me';
+    var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/' + DHISFolder + '/api/me';
 
     // Get the users information
     $.ajax({
@@ -319,7 +321,8 @@ function getAmountQuizesOnLevel(course,course_quizes,level,callback){
 */
 function getCourses(handler) {
 	// Get URL from where to fetch courses json
-	var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_courses';
+	var DHISFolder = getDHISInstallFolder();
+	var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_courses';
 
 	// Get courses as json object and on success use handler function
 	$.ajax({
@@ -362,7 +365,8 @@ function showPoints(){
 function getQuizes(handler) {
 
 	// Get URL from where to fetch quiz's json
-	var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_quizes';
+	var DHISFolder = getDHISInstallFolder();
+	var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_quizes';
 
 	// Get quiz's as json object and on success use handler function
 	$.ajax({

@@ -4,7 +4,8 @@
 
 
 function getQuizResourceURL() {
-    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_quizes';
+    var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_quizes';
     return url;
 }
 
@@ -68,7 +69,8 @@ function getImages(handler) {
 }
 function getImageResourceURL(quiz_id){
     //var quiz_id = getURLParameter(window.location, 'quiz_id');
-    var url = getHostRoot() + '/dhis/api/systemSettings/VJFS_Images_' + quiz_id;
+    var DHISFolder = getDHISInstallFolder();
+    var url = getHostRoot() + '/' + DHISFolder + '/api/systemSettings/VJFS_Images_' + quiz_id;
     //console.log(url);
     return url;
 }
