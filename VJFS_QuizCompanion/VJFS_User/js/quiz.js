@@ -11,7 +11,12 @@ function getUserQuizes(handler) {
         // Get quiz's as json object and on success use handler function
         $.ajax({
             url: url,
-            dataType: 'json'
+            dataType: 'json',
+            localCache : true,
+            cacheTTL : 0.1,
+            isCacheValid : function(){  
+                return true;
+            }
         }).success(function(quizes) {
 			handler(quizes);
         }).error(function(error) {
@@ -57,6 +62,12 @@ function getImages(handler) {
     // Get quiz's as json object and on success use handler function
     $.ajax({
         url: url,
+        localCache : true,
+        cacheTTL : 0.1,
+        isCacheValid : function(){  
+            return true;
+        },
+        
         dataType: 'json'
     }).success(function(images) {
         handler(images);
@@ -135,6 +146,11 @@ function getUserQuestions(handler) {
 			// Get question's as json object and on success use handler function
 			$.ajax({
 				url: url,
+        localCache : true,
+        cacheTTL : 0.1,
+        isCacheValid : function(){  
+            return true;
+        },
 				dataType: 'json'
 			}).success(function(questions) {
 				handler(questions);
@@ -157,7 +173,7 @@ function setUserQuestions(exists, questions, handler) {
 
      getMyUserName(function(user){
 
-        var username = user.userCredentials.code;
+    var username = user.userCredentials.code;
     // Get URL from where to fetch courses json
     var DHISFolder = getDHISInstallFolder();
         var url = getHostRoot() + '/'+ DHISFolder +'/api/dataStore/coursetaker/VJFS_'+username+'_questions';
@@ -228,7 +244,12 @@ function getMyUserName(handler) {
     // Get the users information
     $.ajax({
         url: url,
-        dataType: 'json'
+        dataType: 'json',
+        localCache : true,
+        cacheTTL : 0.5,
+        isCacheValid : function(){  
+            return true;
+        }
     }).success(function(questions) {
         handler(questions);
     }).error(function(error) {

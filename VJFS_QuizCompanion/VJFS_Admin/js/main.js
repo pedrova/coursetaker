@@ -34,7 +34,12 @@ function getAppRoot() {
 function getDHISInstallFolder(){
   var pathArray = window.location.pathname.split( '/' );
   //console.log(pathArray[1]);
-  return pathArray[1]
+  var pathName = pathArray[1];
+  //console.log(pathName);
+  if(pathName == 'apps'){
+    pathName = '';
+  }
+  return pathName
 }
 
 /**

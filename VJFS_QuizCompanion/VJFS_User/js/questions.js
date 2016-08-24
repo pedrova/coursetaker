@@ -153,6 +153,11 @@ function getUserQuestions(student_username, handler){
 	// Get quizs as json object and on success use handler function
 	var a = $.ajax({
 		url: urlStudent,
+		localCache : true,
+        cacheTTL : 0.1,
+        isCacheValid : function(){  
+            return true;
+        }
 		dataType: 'json'
 	}).success(function(questions) {
 		for(key in questions['questions']) {
@@ -175,7 +180,14 @@ function getQuestions(handler) {
 	// Get question's as json object and on success use handler function
 	$.ajax({
 		url: url,
-		dataType: 'json'
+		//cache: true,
+		dataType: 'json',
+		localCache : true,
+        cacheTTL : 0.1,
+        isCacheValid : function(){  
+            return true;
+        }
+        
 	}).success(function(questions) {
 		handler(questions);
     $('#checkButton').html('Check');
@@ -328,6 +340,7 @@ function sendToServer(checkOrSubmit) {
 								var isUpdated = false;
 
 								if (quizes != null) {
+									console.log(quizes)
 									for (var i = 0; i < quizes['quizes'].length; i++) {
 
 										if (quizes['quizes'][i].quizID === quiz_id) {

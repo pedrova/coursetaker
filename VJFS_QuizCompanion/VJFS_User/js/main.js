@@ -34,7 +34,12 @@ function getURLParameter(url, parameter_key)
 function getDHISInstallFolder(){
   var pathArray = window.location.pathname.split( '/' );
   //console.log(pathArray[1]);
-  return pathArray[1]
+  var pathName = pathArray[1];
+  //console.log(pathName);
+  if(pathName == 'apps'){
+    pathName = '';
+  }
+  return pathName
 }
 
 /**
@@ -64,6 +69,9 @@ var mainWindow, quizWindow;
 
 function openWin() {
   var DHISFolder = getDHISInstallFolder();
+  if(DHISFolder == ''){
+    mainWindow = window.open("/"+ DHISFolder + "/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
+  }
   mainWindow = window.open("/"+ DHISFolder + "/", "mainNavigationWindow", "width=250, height=250, location=yes, scrollbars=yes");
   quizWindow = window.open("takecourse.html", "quizPanel", "width=250, height=250, location=yes, scrollbars=yes");
   if (!quizWindow || quizWindow.closed
@@ -93,6 +101,12 @@ function getUserLevel(handler) {
     // Get quiz's as json object and on success use handler function
     $.ajax({
       url: url,
+      localCache : true,
+      cacheTTL : 0.1,
+      isCacheValid : function(){  
+        return true;
+      },
+      
       dataType: 'json'
     }).success(function(level) {
       handler(level.level);

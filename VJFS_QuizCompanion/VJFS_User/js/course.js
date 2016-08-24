@@ -79,7 +79,13 @@ function getMyUserName(handler) {
     // Get the users information
     $.ajax({
         url: url,
-        dataType: 'json'
+        
+        dataType: 'json',
+        localCache : true,
+        cacheTTL : 2,
+        isCacheValid : function(){  
+            return true;
+        }
     }).success(function(questions) {
         handler(questions);
     }).error(function(error) {
@@ -327,6 +333,11 @@ function getCourses(handler) {
 	// Get courses as json object and on success use handler function
 	$.ajax({
 		url: url,
+		localCache : true,
+        cacheTTL : 0.1,
+        isCacheValid : function(){  
+            return true;
+        },
 		dataType: 'json'
 	}).success(function(courses) {
 		handler(courses);
@@ -353,12 +364,10 @@ function showPoints(){
 				} else {
 					$('#user_score').append('<h4> Your total score: ' + points +'</h4>');
 				}
-				
 			});
 		} else {
 			$('#user_score').append('<h4> Your total score: ' + points +', start taking courses and get points!</h4>');
-		}
-		
+		}	
 	});
 }
 
@@ -371,6 +380,11 @@ function getQuizes(handler) {
 	// Get quiz's as json object and on success use handler function
 	$.ajax({
 		url: url,
+		localCache : true,
+        cacheTTL : 0.1,
+        isCacheValid : function(){  
+            return true;
+        },
 		dataType: 'json'
 	}).success(function(quizes) {
 		handler(quizes);
